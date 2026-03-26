@@ -98,12 +98,19 @@ classDiagram
 **a. Constraints and priorities**
 
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
+    - **Time budget**: The owner has a total number of minutes available per day. The scheduler greedily fills tasks until the budget runs out.
+    - **Priority**: Tasks are sorted by priority (high > medium > low) so the most urgent care activities are scheduled first.
+    - **Time window preference**: Each task has a preferred window (morning, afternoon, or evening). The scheduler only considers tasks whose window matches one the owner is available for.
+    - **Duration tiebreaker**: Among tasks with the same priority, shorter tasks are selected first so more tasks can fit in the budget.
 - How did you decide which constraints mattered most?
+    - Priority is ranked highest because a pet's health-critical tasks (medication, feeding) should never be dropped in favor of low-priority ones. Time window comes next because scheduling a morning walk in the evening defeats the purpose. Duration is the tiebreaker to maximize the number of tasks that fit, which benefits the pet's overall care.
 
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+    - The conflict detection system checks for overlaps at the **time-window level** (morning, afternoon, evening) rather than tracking exact start/end times. This means it can detect that "morning is overbooked by 15 minutes" or that "Mochi has 3 tasks in the same morning window," but it cannot tell you whether two specific tasks overlap minute-by-minute. It also splits the total time budget evenly across windows rather than allowing custom per-window budgets.
 - Why is that tradeoff reasonable for this scenario?
+    - For a pet care app, owners think in broad windows ("I have time in the morning and evening"), not precise 15-minute calendar slots. Window-level detection catches the most common real problem -- piling too many tasks into one part of the day -- without adding complexity that would confuse a casual user. If exact minute-by-minute scheduling were needed (e.g., coordinating multiple caregivers), we would need to add start times to each task, but that is outside the scope of this project.
 
 ---
 

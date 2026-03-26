@@ -22,6 +22,16 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+The Scheduler class includes several algorithmic features beyond basic task listing:
+
+- **Priority-based greedy scheduling**: Tasks are sorted by priority (high first) and packed into the owner's daily time budget. Shorter tasks break ties so more activities fit.
+- **Chronological ordering**: The final plan is re-sorted by time window (morning -> afternoon -> evening) with priority as a tiebreaker, so the output reads like an actual day.
+- **Sorting and filtering**: Tasks can be sorted by time, priority, or both. They can also be filtered by pet name, completion status, or time window.
+- **Recurring tasks**: When a daily or weekly task is marked complete, a new instance is automatically created with the next due date using `timedelta`. The new task is added to the same pet.
+- **Conflict detection**: The scheduler warns (without crashing) when a time window is overbooked or when a single pet has multiple tasks competing for the same window.
+
 ## Getting started
 
 ### Setup
