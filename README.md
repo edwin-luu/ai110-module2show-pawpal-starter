@@ -32,6 +32,27 @@ The Scheduler class includes several algorithmic features beyond basic task list
 - **Recurring tasks**: When a daily or weekly task is marked complete, a new instance is automatically created with the next due date using `timedelta`. The new task is added to the same pet.
 - **Conflict detection**: The scheduler warns (without crashing) when a time window is overbooked or when a single pet has multiple tasks competing for the same window.
 
+## Testing PawPal+
+
+Run the full test suite from the project root:
+
+```bash
+python -m pytest
+```
+
+The suite includes **13 tests** covering:
+
+- **Basic operations**: Task completion status toggle, pet task list growth
+- **Sorting correctness**: Tasks returned in chronological order (morning -> afternoon -> evening); higher priority ranks first within the same window
+- **Recurrence logic**: Daily tasks create a next-day occurrence, weekly tasks create a +7 day occurrence, one-off tasks do not recur
+- **Conflict detection**: Overbooked time windows are flagged, same-pet overlaps in one window are warned, and balanced schedules produce no false positives
+- **Budget enforcement**: Plan duration never exceeds the owner's time budget; high-priority tasks are chosen over low-priority when budget is tight
+- **Edge cases**: A pet with zero tasks generates an empty plan without crashing
+
+**Confidence Level: 4/5**
+
+The core scheduling logic, sorting, recurrence, and conflict detection are all verified. One star is held back because the test suite does not yet cover multi-owner scenarios, the Streamlit UI integration, or stress testing with a large number of tasks and pets.
+
 ## Getting started
 
 ### Setup
